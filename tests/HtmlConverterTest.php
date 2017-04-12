@@ -2,6 +2,7 @@
 
 namespace League\HTMLToMarkdown\Test;
 
+use League\HTMLToMarkdown\Environment;
 use League\HTMLToMarkdown\HtmlConverter;
 
 class HtmlConverterTest extends \PHPUnit_Framework_TestCase
@@ -28,6 +29,7 @@ class HtmlConverterTest extends \PHPUnit_Framework_TestCase
         $this->html_gives_markdown('<p>*test*</p>', '\\*test\\*'); // \*test\*
         $this->html_gives_markdown('<p>_test_</p>', '\\_test\\_'); // \_test\_
         $this->html_gives_markdown('<p>\\*test\\*</p>', '\\\\\\*test\\\\\\*'); // \\\*test\\\*
+        $this->html_gives_markdown('<p>test[test]</p>', 'test\\[test\\]'); // test\[test\]
     }
 
     public function test_line_breaks()
@@ -105,6 +107,12 @@ class HtmlConverterTest extends \PHPUnit_Framework_TestCase
         $this->html_gives_markdown('<a href="">Test</a>', '<a href="">Test</a>');
         $this->html_gives_markdown('<a href="#nerd" title="Title">Test</a>', '[Test](#nerd "Title")');
         $this->html_gives_markdown('<a href="#nerd">Test</a>', '[Test](#nerd)');
+
+        // Autolinking
+        $this->html_gives_markdown('<a href="test">test</a>', '[test](test)');
+        $this->html_gives_markdown('<a href="google.com">google.com</a>', '[google.com](google.com)');
+        $this->html_gives_markdown('<a href="https://www.google.com">https://www.google.com</a>', '<https://www.google.com>');
+        $this->html_gives_markdown('<a href="ftp://files.example.com">ftp://files.example.com</a>', '<ftp://files.example.com>');
     }
 
     public function test_horizontal_rule()
@@ -236,5 +244,18 @@ class HtmlConverterTest extends \PHPUnit_Framework_TestCase
         $this->html_gives_markdown("<p>123456789) Foo and 1234567890) Bar!</p>\n<p>1. Platz in 'Das große Backen'</p>", "123456789\\) Foo and 1234567890) Bar!\n\n1\\. Platz in 'Das große Backen'");
         $this->html_gives_markdown("<p>\n+ Siri works well for TV and movies<br>\n- No 4K support\n</p>", "\+ Siri works well for TV and movies  \n\- No 4K support");
         $this->html_gives_markdown('<p>You forgot the &lt;!--more--&gt; tag!</p>', 'You forgot the \<!--more--> tag!');
+    }
+
+    public function test_instatiation_with_environment()
+    {
+        $markdown = new HtmlConverter(new Environment(array()));
+
+        $htmlH3 = '<h3>Test</h3>';
+        $result = $markdown->convert($htmlH3);
+        $this->assertEquals($htmlH3, $result);
+
+        $htmlH4 = '<h4>Test</h4>';
+        $result = $markdown->convert($htmlH4);
+        $this->assertEquals($htmlH4, $result);
     }
 }

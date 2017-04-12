@@ -123,6 +123,24 @@ $converter->getConfig()->setOption('hard_break', false); // default
 $markdown = $converter->convert($html); // $markdown now contains "test  \nline break"
 ```
 
+### Passing custom Environment object
+
+You can pass current `Environment` object to customize i.e. which converters should be used.
+
+```php
+$environment = new Environment(array(
+    // your configuration here
+));
+$environment->addConverter(new HeaderConverter()); // optionally - add converter manually
+
+$converter = new HtmlConverter($environment);
+
+$html = '<h3>Header</h3>
+<img src="" />
+';
+$markdown = $converter->convert($html); // $markdown now contains "### Header" and "<img src="" />"
+```
+
 ### Limitations
 
 - Markdown Extra, MultiMarkdown and other variants aren't supported – just Markdown.
