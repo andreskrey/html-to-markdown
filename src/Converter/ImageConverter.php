@@ -18,7 +18,7 @@ class ImageConverter implements ConverterInterface
         $title = $element->getAttribute('title');
 
         if (!trim($alt)) {
-            $alt = 'Imagen';
+            $alt = 'Image';
         }
 
         if ($title !== '') {
