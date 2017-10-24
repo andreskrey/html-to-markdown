@@ -17,6 +17,11 @@ class ImageConverter implements ConverterInterface
         $alt = $element->getAttribute('alt');
         $title = $element->getAttribute('title');
 
+        // Replace ) for \) because reddit interprets that as the closure of the link markdown
+        if (mb_strpos($src, ')') !== false) {
+            $src = str_replace(')', '\)', $src);
+        }
+
         if (!trim($alt)) {
             $alt = 'Image';
         }
