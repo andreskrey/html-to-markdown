@@ -17,6 +17,10 @@ class LinkConverter implements ConverterInterface
         $title = $element->getAttribute('title');
         $text = trim($element->getValue());
 
+        if (!$href && !$title && !$text) {
+            return '';
+        }
+
         // Replace ) for \) because reddit interprets that as the closure of the link markdown
         if (mb_strpos($href, ')') !== false) {
             $href = str_replace(')', '\)', $href);
