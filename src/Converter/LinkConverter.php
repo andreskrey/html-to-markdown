@@ -17,8 +17,13 @@ class LinkConverter implements ConverterInterface
         $title = $element->getAttribute('title');
         $text = trim($element->getValue());
 
-        if ((!$href && !$title && !$text) || $href === '#'){
+        if (!$href && !$title && !$text) {
             return '';
+        }
+
+        // If it's an anchor link, just return either the text or the title
+        if ($href === '#') {
+            return empty($text) ? $text : $title;
         }
 
         // Replace ) for \) because reddit interprets that as the closure of the link markdown
