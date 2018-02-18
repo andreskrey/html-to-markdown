@@ -23,7 +23,7 @@ class LinkConverter implements ConverterInterface
 
         // If it's an anchor link, just return either the text or the title
         if ($href === '#') {
-            return empty($text) ? $text : $title;
+            return !empty($text) ? $text : $title;
         }
 
         // Replace ) for \) because reddit interprets that as the closure of the link markdown
