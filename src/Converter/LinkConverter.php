@@ -17,7 +17,7 @@ class LinkConverter implements ConverterInterface
         $title = $element->getAttribute('title');
         $text = trim($element->getValue());
 
-        if (!$href && !$title && !$text) {
+        if ((!$href && !$title && !$text) || $href === '#'){
             return '';
         }
 
