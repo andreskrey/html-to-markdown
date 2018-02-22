@@ -17,7 +17,7 @@ class ImageConverter implements ConverterInterface
         $alt = $element->getAttribute('alt');
         $title = $element->getAttribute('title');
 
-        if (!$src && !$alt && !$title) {
+        if ((!$src && !$alt && !$title) || strpos($src, 'data:') === 0) {
             return '';
         }
 
